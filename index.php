@@ -1,26 +1,22 @@
 <?php
 session_start();
-if (isset($_SESSION['email'])) {
-    header("Location: form.php");
-    exit();
-}
 
-$error = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+    if (isset($_POST['login'])) {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
 
-    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $domain = explode("@", $email)[1];  // Ambil domain dari email
-        if ($password === $domain) {
+        // Ambil domain dari email
+        $emailParts = explode("@", $email);
+        $correctPassword = $emailParts[1] ?? '';
+
+        if ($password === $correctPassword) {
             $_SESSION['email'] = $email;
             header("Location: form.php");
             exit();
         } else {
-            $error = "Password salah!";
+            $error = "Email atau password salah!";
         }
-    } else {
-        $error = "Format email tidak valid!";
     }
 }
 ?>
@@ -36,11 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h2>Login</h2>
-        <?php if ($error) echo "<p class='error'>$error</p>"; ?>
+        <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
         <form method="POST">
             <input type="email" name="email" placeholder="Masukkan Email" required>
-            <input type="password" name="password" placeholder="Masukkan Password" required>
-            <button type="submit">Login</button>
+            <input type="password" name="password" placeholder="Masukkan Password (gunakan pw (gmail.com))" required>
+            <button type="submit" name="login">Login</button>
         </form>
     </div>
 </body>

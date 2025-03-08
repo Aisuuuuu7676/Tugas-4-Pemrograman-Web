@@ -1,4 +1,18 @@
-<?php include 'session.php'; ?>
+<?php
+session_start();
+if (!isset($_SESSION['email'])) {
+    header("Location: index.php");
+    exit();
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $_SESSION['nama'] = $_POST['nama'];
+    $_SESSION['ttl'] = $_POST['ttl'];
+    $_SESSION['pendidikan'] = $_POST['pendidikan'];
+    header("Location: cv.php");
+    exit();
+}
+?>
 
 <!DOCTYPE html>
 <html lang="id">
@@ -10,14 +24,13 @@
 </head>
 <body>
     <div class="container">
-        <h2>Form CV</h2>
-        <form action="cv.php" method="POST">
+        <h2>Isi Data CV</h2>
+        <form method="POST">
             <input type="text" name="nama" placeholder="Nama Lengkap" required>
             <input type="text" name="ttl" placeholder="Tempat, Tanggal Lahir" required>
-            <textarea name="pendidikan" placeholder="Riwayat Pendidikan" required></textarea>
+            <input type="text" name="pendidikan" placeholder="Riwayat Pendidikan" required>
             <button type="submit">Buat CV</button>
         </form>
-        <a href="logout.php">Logout</a>
     </div>
 </body>
 </html>

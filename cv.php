@@ -1,14 +1,14 @@
-<?php include 'session.php'; ?>
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nama = $_POST['nama'];
-    $ttl = $_POST['ttl'];
-    $pendidikan = $_POST['pendidikan'];
-    $email = $_SESSION['email'];
-} else {
-    header("Location: form.php");
+session_start();
+if (!isset($_SESSION['email']) || !isset($_SESSION['nama'])) {
+    header("Location: index.php");
     exit();
 }
+
+$nama = $_SESSION['nama'];
+$ttl = $_SESSION['ttl'];
+$pendidikan = $_SESSION['pendidikan'];
+$email = $_SESSION['email'];
 ?>
 
 <!DOCTYPE html>
@@ -20,13 +20,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h2>CV</h2>
+    <div class="container cv">
+        <h2>Curriculum Vitae</h2>
         <p><strong>Nama:</strong> <?php echo $nama; ?></p>
         <p><strong>Tempat, Tanggal Lahir:</strong> <?php echo $ttl; ?></p>
-        <p><strong>Riwayat Pendidikan:</strong> <?php echo nl2br($pendidikan); ?></p>
+        <p><strong>Riwayat Pendidikan:</strong> <?php echo $pendidikan; ?></p>
         <p><strong>Email:</strong> <?php echo $email; ?></p>
-        <a href="logout.php">Logout</a>
     </div>
 </body>
 </html>
